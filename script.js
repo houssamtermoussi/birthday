@@ -205,17 +205,27 @@
     let lastFrame = 0;
     let frameRequested = false;
 
+    // Position de la souris ramenée entre -1 et 1, lissée à chaque image (sert à la parallaxe).
+    const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    const DUST_MARGIN = 8;
+    const wrap = (value, span) => ((value % span) + span) % span;
+
     function makeDots() {
         const count = Math.round(Math.min(90, (width * height) / 15000));
-        dots = Array.from({ length: count }, () => ({
-            x: rand(0, width),
-            y: rand(0, height),
-            r: rand(.5, 2.1),
-            vx: rand(-.07, .07),
-            vy: rand(-.3, -.07),
-            phase: rand(0, Math.PI * 2),
-            speed: rand(.008, .028),
-        }));
+        dots = Array.from({ length: count }, () => {
+            // Profondeur : les grains proches sont plus gros et bougent davantage au défilement.
+            const depth = rand(.15, 1);
+            return {
+                depth,
+                x: rand(0, width),
+                y: rand(0, height),
+                r: .4 + depth * 1.7,
+                vx: rand(-.07, .07),
+                vy: rand(-.3, -.07),
+                phase: rand(0, Math.PI * 2),
+                speed: rand(.008, .028),
+            };
+        });
     }
 
     function resize() {
@@ -229,28 +239,31 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         });
         if (widthChanged || !dots.length) makeDots();
+        parallaxDirty = true;
         drawAmbient(0);
     }
 
     function drawAmbient(k) {
         ambientCtx.clearRect(0, 0, width, height);
         ambientCtx.fillStyle = '#f3d98b';
+        const spanX = width + DUST_MARGIN * 2;
+        const spanY = height + DUST_MARGIN * 2;
+        const scroll = reduceMotion ? 0 : window.scrollY * .3;
         dots.forEach((dot) => {
-            dot.x += dot.vx * k;
-            dot.y += dot.vy * k;
+            dot.x = wrap(dot.x + dot.vx * k, spanX);
+            dot.y = wrap(dot.y + dot.vy * k, spanY);
             dot.phase += dot.speed * k;
-            if (dot.y < -6) {
-                dot.y = height + 6;
-                dot.x = rand(0, width);
-            }
+            // Parallaxe : chaque grain se décale selon sa profondeur, puis reboucle hors champ.
+            const x = wrap(dot.x - pointer.x * dot.depth * 16, spanX) - DUST_MARGIN;
+            const y = wrap(dot.y - scroll * dot.depth, spanY) - DUST_MARGIN;
             const alpha = .12 + .58 * (.5 + .5 * Math.sin(dot.phase));
             ambientCtx.globalAlpha = alpha * .16;
             ambientCtx.beginPath();
-            ambientCtx.arc(dot.x, dot.y, dot.r * 3.6, 0, Math.PI * 2);
+            ambientCtx.arc(x, y, dot.r * 3.6, 0, Math.PI * 2);
             ambientCtx.fill();
             ambientCtx.globalAlpha = alpha;
             ambientCtx.beginPath();
-            ambientCtx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+            ambientCtx.arc(x, y, dot.r, 0, Math.PI * 2);
             ambientCtx.fill();
         });
         ambientCtx.globalAlpha = 1;
@@ -285,11 +298,80 @@
         });
     }
 
+    /* ---------- Parallaxe ---------- */
+
+    // Les éléments de l'accueil se décalent selon le défilement depuis le haut de page ;
+    // les autres selon leur distance au centre de l'écran. Vitesse positive = plan éloigné.
+    const heroInner = $('.hero__inner');
+    const layers = $$('[data-speed], [data-shift]').map((el) => ({
+        el,
+        speed: parseFloat(el.dataset.speed) || 0,
+        shift: parseFloat(el.dataset.shift) || 0,
+        minWidth: parseFloat(el.dataset.minWidth) || 0,
+        fromTop: Boolean(el.closest('.hero')),
+        x: 0,
+        y: 0,
+    }));
+    const orbs = $$('[data-orb]').map((el) => ({ el, speed: parseFloat(el.dataset.orb) }));
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    let lastScroll = -1;
+    let parallaxDirty = true;
+
+    function updateParallax(k) {
+        const scroll = window.scrollY;
+        const ease = 1 - Math.pow(.9, k);
+        const gap = Math.abs(pointer.targetX - pointer.x) + Math.abs(pointer.targetY - pointer.y);
+        pointer.x += (pointer.targetX - pointer.x) * ease;
+        pointer.y += (pointer.targetY - pointer.y) * ease;
+        if (scroll === lastScroll && gap < .001 && !parallaxDirty) return;
+        lastScroll = scroll;
+        parallaxDirty = false;
+
+        // Toutes les lectures de mise en page d'abord, les écritures ensuite.
+        const heroScroll = Math.min(scroll, height * 1.2);
+        const moves = layers.map((layer) => {
+            if (layer.minWidth > width) return { x: 0, y: 0 };
+            let y = 0;
+            if (layer.fromTop) {
+                y = heroScroll * layer.speed;
+            } else if (layer.speed) {
+                // On retire le décalage déjà appliqué pour retrouver la position d'origine.
+                const box = layer.el.getBoundingClientRect();
+                const center = box.top - layer.y + box.height / 2;
+                y = clamp(height / 2 - center, -height, height) * layer.speed;
+            }
+            return { x: pointer.x * layer.shift, y: y + pointer.y * layer.shift * .6 };
+        });
+        layers.forEach((layer, index) => {
+            const { x, y } = moves[index];
+            if (Math.abs(x - layer.x) < .05 && Math.abs(y - layer.y) < .05) return;
+            layer.x = x;
+            layer.y = y;
+            layer.el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+        });
+        heroInner.style.opacity = clamp(1 - scroll / (height * .6), 0, 1).toFixed(3);
+        orbs.forEach((orb) => {
+            const x = pointer.x * orb.speed * -60;
+            orb.el.style.translate = `${x.toFixed(1)}px ${(-scroll * orb.speed).toFixed(1)}px`;
+        });
+    }
+
+    if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        window.addEventListener('pointermove', (event) => {
+            if (event.pointerType !== 'mouse') return;
+            pointer.targetX = clamp(event.clientX / width * 2 - 1, -1, 1);
+            pointer.targetY = clamp(event.clientY / height * 2 - 1, -1, 1);
+        }, { passive: true });
+    }
+
     function frame(now) {
         frameRequested = false;
         const k = lastFrame ? Math.min(3, (now - lastFrame) / 16.67) : 1;
         lastFrame = now;
-        if (!reduceMotion) drawAmbient(k);
+        if (!reduceMotion) {
+            updateParallax(k);
+            drawAmbient(k);
+        }
         if (pieces.length) drawConfetti(k);
         else confettiCtx.clearRect(0, 0, width, height);
         requestFrame();
@@ -348,8 +430,12 @@
     const gate = $('#gate');
     const openButton = $('#open');
 
+    // Après un rechargement, on repart toujours du haut : l'accueil est la première chose à voir.
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+
     function openGate() {
         if (root.classList.contains('is-open')) return;
+        window.scrollTo({ top: 0, behavior: 'instant' });
         root.classList.add('is-open');
         setTimeout(() => { gate.hidden = true; }, 1500);
         playMusic();

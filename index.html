@@ -16,6 +16,14 @@
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+    <!-- Halos d'arrière-plan : chacun défile à sa propre vitesse (data-orb) -->
+    <div class="orbs" aria-hidden="true">
+        <span class="orb orb--1" data-orb=".1"></span>
+        <span class="orb orb--2" data-orb=".22"></span>
+        <span class="orb orb--3" data-orb=".35"></span>
+        <span class="orb orb--4" data-orb=".45"></span>
+        <span class="orb orb--5" data-orb=".18"></span>
+    </div>
     <canvas class="ambient" id="ambient" aria-hidden="true"></canvas>
     <div class="frame" aria-hidden="true"></div>
 
@@ -36,19 +44,20 @@
 
     <main>
         <!-- Accueil -->
+        <!-- Parallaxe : data-speed = décalage au défilement, data-shift = décalage (px) suivant la souris -->
         <header class="hero">
             <div class="hero__inner">
-                <p class="eyebrow">Le 16 novembre</p>
-                <svg class="ornament" viewBox="0 0 200 20" aria-hidden="true">
+                <p class="eyebrow" data-speed=".08" data-shift="4">Le 16 novembre</p>
+                <svg class="ornament" viewBox="0 0 200 20" aria-hidden="true" data-speed=".12" data-shift="6">
                     <path d="M0 10h78M122 10h78"/><path d="M100 2l8 8-8 8-8-8z"/>
                     <circle cx="85" cy="10" r="1.6"/><circle cx="115" cy="10" r="1.6"/>
                 </svg>
                 <h1 class="hero__title">
-                    <span class="hero__script">Joyeux Anniversaire</span>
-                    <span class="hero__name gold">Hind</span>
+                    <span class="hero__script" data-speed=".2" data-shift="-12">Joyeux Anniversaire</span>
+                    <span class="hero__name gold" data-speed=".3" data-shift="18">Hind</span>
                 </h1>
-                <p class="hero__tagline"><span data-age>45</span> ans de grâce, d’amour et de lumière</p>
-                <a class="scroll-cue" href="#voeu">Découvrir<span aria-hidden="true"></span></a>
+                <p class="hero__tagline" data-speed=".34" data-shift="-6"><span data-age>45</span> ans de grâce, d’amour et de lumière</p>
+                <a class="scroll-cue" href="#voeu" data-speed=".38">Découvrir<span aria-hidden="true"></span></a>
             </div>
         </header>
 
@@ -58,7 +67,9 @@
             <h2 class="title reveal">Fais un vœu, Maman</h2>
             <p class="lead reveal">Ferme les yeux, pense très fort à ce qui te rend heureuse… puis souffle tes bougies.</p>
 
-            <div class="cake reveal" id="cake">
+            <div class="cake reveal" id="cake" data-shift="8">
+                <span class="ring ring--a" data-speed=".2" data-shift="-10" aria-hidden="true"></span>
+                <span class="ring ring--b" data-speed="-.14" data-shift="-22" aria-hidden="true"></span>
                 <svg viewBox="0 50 400 404" role="img" aria-label="Gâteau d’anniversaire à trois étages avec ses bougies">
                     <defs>
                         <linearGradient id="goldH" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="370" y2="0">
@@ -193,7 +204,7 @@
                     </g>
 
                     <!-- Étincelles -->
-                    <g fill="#f6e6a8">
+                    <g fill="#f6e6a8" data-speed="-.12" data-shift="-14">
                         <g transform="translate(38 150) scale(1.2)"><use href="#starShape" class="twinkle" style="--t:0s"/></g>
                         <g transform="translate(352 120) scale(1.5)"><use href="#starShape" class="twinkle" style="--t:-.9s"/></g>
                         <g transform="translate(322 196) scale(.8)"><use href="#starShape" class="twinkle" style="--t:-1.7s"/></g>
@@ -211,6 +222,7 @@
 
         <!-- Compteur -->
         <section class="section time">
+            <span class="backdrop-number" data-age data-speed=".3" data-shift="-16" aria-hidden="true">45</span>
             <p class="eyebrow reveal">Depuis le 16 novembre 1981</p>
             <h2 class="title reveal">Tu illumines nos vies depuis</h2>
             <div class="stats reveal">
@@ -240,7 +252,7 @@
                     <h3>Une part de bonheur</h3>
                     <p>Que chaque jour t’offre une raison de sourire, aussi douce qu’une part de ton gâteau préféré.</p>
                 </article>
-                <article class="card reveal">
+                <article class="card reveal" data-speed="-.08" data-min-width="600">
                     <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
                         <path d="M19 36l4 19h18l4-19"/>
                         <path d="M27 36l1.5 19M32 36v19M37 36l-1.5 19"/>
@@ -261,7 +273,7 @@
                     <h3>Des couleurs plein la vie</h3>
                     <p>Que tes journées soient gaies, légères et remplies de belles surprises.</p>
                 </article>
-                <article class="card reveal">
+                <article class="card reveal" data-speed="-.08" data-min-width="600">
                     <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
                         <rect x="12" y="27" width="40" height="28" rx="1.5"/>
                         <rect x="9" y="19" width="46" height="8" rx="1.5"/>
@@ -276,7 +288,7 @@
 
         <!-- Lettre -->
         <section class="section letter">
-            <div class="letter__paper reveal">
+            <div class="letter__paper reveal" data-speed="-.05">
                 <p class="eyebrow">Quelques mots</p>
                 <h2 class="letter__title">Chère Maman,</h2>
                 <p>Aujourd’hui est un jour à part&nbsp;: c’est celui où le monde a reçu son plus beau cadeau, toi.</p>

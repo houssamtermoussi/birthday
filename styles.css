@@ -138,6 +138,28 @@ h1, h2, h3, p { margin: 0; }
 .ambient { z-index: 0; }
 .confetti { z-index: 120; }
 
+/* Halos d'arrière-plan en parallaxe : répartis sur plusieurs hauteurs d'écran, ils entrent au fil du défilement. */
+.orbs {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(212, 175, 55, .17), transparent);
+    will-change: translate;
+}
+
+.orb--1 { width: 46vmax; height: 46vmax; left: -16vmax; top: 60vh; }
+.orb--2 { width: 34vmax; height: 34vmax; right: -10vmax; top: 115vh; background: radial-gradient(closest-side, rgba(170, 60, 85, .2), transparent); }
+.orb--3 { width: 40vmax; height: 40vmax; left: -8vmax; top: 190vh; }
+.orb--4 { width: 30vmax; height: 30vmax; right: -6vmax; top: 260vh; background: radial-gradient(closest-side, rgba(246, 230, 168, .13), transparent); }
+.orb--5 { width: 22vmax; height: 22vmax; right: 4vmax; top: 12vh; background: radial-gradient(closest-side, rgba(246, 230, 168, .1), transparent); }
+
 main, .footer {
     position: relative;
     z-index: 1;
@@ -390,6 +412,30 @@ main, .footer {
 
 .cake.is-blown::before { opacity: .3; }
 
+/* Anneaux dorés derrière le gâteau, déplacés en parallaxe. */
+.ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: -1;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.ring--a {
+    width: 124%;
+    margin: -62% 0 0 -62%;
+    border: 1px solid rgba(212, 175, 55, .26);
+}
+
+.ring--b {
+    width: 176%;
+    margin: -88% 0 0 -88%;
+    border: 1px dashed rgba(212, 175, 55, .22);
+    animation: spin 120s linear infinite;
+}
+
 .cake svg {
     display: block;
     width: 100%;
@@ -463,6 +509,31 @@ html:not(.js) #blow { display: none; }
 }
 
 /* ---------- Compteur ---------- */
+
+.time {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Chiffre géant en filigrane, qui défile plus lentement que le contenu. */
+.backdrop-number {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    font-size: clamp(16rem, 52vw, 40rem);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+    color: transparent;
+    background: linear-gradient(rgba(212, 175, 55, .2), rgba(212, 175, 55, .03));
+    -webkit-background-clip: text;
+    background-clip: text;
+    pointer-events: none;
+    user-select: none;
+}
 
 .stats {
     display: grid;
