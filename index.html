@@ -1,11 +1,304 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Joyeux Anniversaire Hind</title>
+    <meta name="description" content="Une surprise pour l’anniversaire de Hind.">
+    <meta property="og:title" content="Joyeux Anniversaire Hind">
+    <meta property="og:description" content="Une surprise t’attend…">
+    <meta name="theme-color" content="#0b0806">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230b0806'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%23d4af37'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='34' text-anchor='middle' fill='%23d4af37'%3EH%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-    
+    <canvas class="ambient" id="ambient" aria-hidden="true"></canvas>
+    <div class="frame" aria-hidden="true"></div>
+
+    <!-- Écran d'ouverture -->
+    <div class="gate" id="gate">
+        <div class="gate__inner">
+            <div class="monogram" aria-hidden="true"><span>H</span></div>
+            <p class="eyebrow">Une surprise pour</p>
+            <p class="gate__name gold">Hind</p>
+            <button class="btn" id="open" type="button">Ouvrir</button>
+            <p class="gate__hint">Pense à activer le son</p>
+        </div>
+    </div>
+
+    <button class="sound" id="sound" type="button" aria-pressed="false" aria-label="Musique">
+        <span></span><span></span><span></span><span></span>
+    </button>
+
+    <main>
+        <!-- Accueil -->
+        <header class="hero">
+            <div class="hero__inner">
+                <p class="eyebrow">Le 16 novembre</p>
+                <svg class="ornament" viewBox="0 0 200 20" aria-hidden="true">
+                    <path d="M0 10h78M122 10h78"/><path d="M100 2l8 8-8 8-8-8z"/>
+                    <circle cx="85" cy="10" r="1.6"/><circle cx="115" cy="10" r="1.6"/>
+                </svg>
+                <h1 class="hero__title">
+                    <span class="hero__script">Joyeux Anniversaire</span>
+                    <span class="hero__name gold">Hind</span>
+                </h1>
+                <p class="hero__tagline"><span data-age>45</span> ans de grâce, d’amour et de lumière</p>
+                <a class="scroll-cue" href="#voeu">Découvrir<span aria-hidden="true"></span></a>
+            </div>
+        </header>
+
+        <!-- Gâteau -->
+        <section class="section wish" id="voeu">
+            <p class="eyebrow reveal">Le gâteau</p>
+            <h2 class="title reveal">Fais un vœu, Maman</h2>
+            <p class="lead reveal">Ferme les yeux, pense très fort à ce qui te rend heureuse… puis souffle tes bougies.</p>
+
+            <div class="cake reveal" id="cake">
+                <svg viewBox="0 50 400 404" role="img" aria-label="Gâteau d’anniversaire à trois étages avec ses bougies">
+                    <defs>
+                        <linearGradient id="goldH" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="370" y2="0">
+                            <stop offset="0" stop-color="#7a5a17"/><stop offset=".18" stop-color="#c9a13a"/><stop offset=".34" stop-color="#fbeeb0"/><stop offset=".48" stop-color="#d9b548"/><stop offset=".66" stop-color="#b98f2a"/><stop offset=".82" stop-color="#f0d77c"/><stop offset="1" stop-color="#7a5a17"/>
+                        </linearGradient>
+                        <linearGradient id="goldBar" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0" stop-color="#a47b22"/><stop offset=".4" stop-color="#fbeeb0"/><stop offset="1" stop-color="#a47b22"/>
+                        </linearGradient>
+                        <linearGradient id="ivoryH" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0" stop-color="#b3a17e"/><stop offset=".12" stop-color="#e6dac4"/><stop offset=".36" stop-color="#fffdf6"/><stop offset=".6" stop-color="#f3e9d6"/><stop offset=".88" stop-color="#d2c3a6"/><stop offset="1" stop-color="#a39069"/>
+                        </linearGradient>
+                        <radialGradient id="ivoryTop" cx=".4" cy=".4" r=".7">
+                            <stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#e9dcc2"/>
+                        </radialGradient>
+                        <radialGradient id="goldTop" cx=".38" cy=".4" r=".75">
+                            <stop offset="0" stop-color="#fdf3bd"/><stop offset=".55" stop-color="#e0bd52"/><stop offset="1" stop-color="#a8811f"/>
+                        </radialGradient>
+                        <radialGradient id="pearl" cx=".35" cy=".3" r=".8">
+                            <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f3e5bd"/><stop offset="1" stop-color="#b08d3f"/>
+                        </radialGradient>
+                        <radialGradient id="rose" cx=".4" cy=".35" r=".75">
+                            <stop offset="0" stop-color="#fbe5e1"/><stop offset=".55" stop-color="#e8b4b8"/><stop offset="1" stop-color="#c07a86"/>
+                        </radialGradient>
+                        <radialGradient id="flame" cx=".5" cy=".72" r=".62">
+                            <stop offset="0" stop-color="#fffbe0"/><stop offset=".45" stop-color="#ffd66b"/><stop offset=".8" stop-color="#ff9d2e"/><stop offset="1" stop-color="#ff6a00"/>
+                        </radialGradient>
+                        <radialGradient id="glow">
+                            <stop offset="0" stop-color="#ffd27a" stop-opacity=".6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+                        </radialGradient>
+                        <radialGradient id="shadow">
+                            <stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+                        </radialGradient>
+                        <pattern id="quilt" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="translate(200 300)">
+                            <path d="M0 11L11 0 22 11 11 22Z" fill="none" stroke="#c9a13a" stroke-width=".8" opacity=".6"/>
+                            <g fill="#c9a13a"><circle cx="11" cy="0" r="1.3"/><circle cx="11" cy="22" r="1.3"/><circle cx="0" cy="11" r="1.3"/><circle cx="22" cy="11" r="1.3"/></g>
+                        </pattern>
+                        <g id="roseShape">
+                            <circle r="10" fill="url(#rose)"/>
+                            <path d="M-6.5 1.5C-7-5.5 4.5-8.5 6.5-1.5 8 5-2 8-4 2.5-5-1.5 1.5-4 3 0 3.6 2.4 0 3.4-.6 1" fill="none" stroke="#a45c68" stroke-width="1.1" stroke-linecap="round" opacity=".75"/>
+                        </g>
+                        <path id="leafShape" d="M0 0Q7-7 16 0 7 7 0 0Z" fill="#c9a13a" stroke="#f3dc8c" stroke-width=".5"/>
+                        <path id="starShape" d="M0-7Q0 0 7 0 0 0 0 7 0 0-7 0 0 0 0-7Z"/>
+                    </defs>
+
+                    <!-- Présentoir -->
+                    <ellipse cx="200" cy="446" rx="130" ry="7" fill="url(#shadow)"/>
+                    <ellipse cx="200" cy="438" rx="64" ry="8" fill="url(#goldH)"/>
+                    <path d="M183 404C186 420 178 430 164 436H236C222 430 214 420 217 404Z" fill="url(#goldH)"/>
+                    <path d="M28 390V396A172 17 0 0 0 372 396V390Z" fill="url(#goldH)"/>
+                    <ellipse cx="200" cy="390" rx="172" ry="17" fill="url(#goldTop)"/>
+                    <ellipse cx="200" cy="392" rx="150" ry="13" fill="#000" opacity=".22"/>
+
+                    <!-- Étage du bas -->
+                    <path d="M60 300V385A140 14 0 0 0 340 385V300Z" fill="url(#ivoryH)"/>
+                    <path d="M60 300V385A140 14 0 0 0 340 385V300Z" fill="url(#quilt)"/>
+                    <g data-pearls="0" fill="url(#pearl)"></g>
+                    <path data-drips="0" fill="url(#goldH)"/>
+                    <ellipse cx="200" cy="300" rx="140" ry="14" fill="url(#goldTop)"/>
+                    <ellipse cx="200" cy="303" rx="110" ry="13" fill="#000" opacity=".2"/>
+
+                    <!-- Étage du milieu -->
+                    <path d="M100 225V300A100 11 0 0 0 300 300V225Z" fill="url(#ivoryH)"/>
+                    <path d="M100 252A100 11 0 0 0 300 252V268A100 11 0 0 1 100 268Z" fill="url(#goldH)"/>
+                    <circle cx="200" cy="271" r="18" fill="url(#goldTop)" stroke="#8a6a1e" stroke-width=".8"/>
+                    <circle cx="200" cy="271" r="13.5" fill="url(#ivoryTop)" stroke="#8a6a1e" stroke-width=".6"/>
+                    <text x="200" y="277.5" text-anchor="middle" font-family="'Cormorant Garamond','Times New Roman',serif" font-size="19" font-weight="700" fill="#8a6a1e">H</text>
+                    <g data-pearls="1" fill="url(#pearl)"></g>
+                    <ellipse cx="200" cy="225" rx="100" ry="11" fill="url(#ivoryTop)"/>
+                    <path d="M100 225A100 11 0 0 0 300 225" fill="none" stroke="url(#goldH)" stroke-width="2.2"/>
+                    <ellipse cx="200" cy="227" rx="70" ry="9.5" fill="#000" opacity=".18"/>
+
+                    <!-- Étage du haut -->
+                    <path d="M138 160V225A62 8 0 0 0 262 225V160Z" fill="url(#ivoryH)"/>
+                    <g data-pearls="2" fill="url(#pearl)"></g>
+                    <path data-drips="2" fill="url(#goldH)"/>
+                    <ellipse cx="200" cy="160" rx="62" ry="8" fill="url(#goldTop)"/>
+
+                    <!-- Roses -->
+                    <use href="#leafShape" transform="translate(64 303) rotate(195)"/>
+                    <use href="#leafShape" transform="translate(118 313) rotate(15) scale(.9)"/>
+                    <use href="#roseShape" transform="translate(74 305) rotate(40) scale(.75)"/>
+                    <use href="#roseShape" transform="translate(89 299) scale(1.1)"/>
+                    <use href="#roseShape" transform="translate(107 308) rotate(-60) scale(.9)"/>
+                    <use href="#leafShape" transform="translate(300 227) rotate(-15) scale(.8)"/>
+                    <use href="#leafShape" transform="translate(250 236) rotate(165) scale(.8)"/>
+                    <use href="#roseShape" transform="translate(290 228) rotate(30) scale(.65)"/>
+                    <use href="#roseShape" transform="translate(275 223) rotate(-20) scale(.95)"/>
+                    <use href="#roseShape" transform="translate(259 231) rotate(80) scale(.8)"/>
+
+                    <!-- Bougies -->
+                    <g fill="url(#goldBar)" stroke="#8a6a1e" stroke-width=".5">
+                        <rect x="148" y="127" width="7" height="37" rx="1.5"/>
+                        <rect x="245" y="127" width="7" height="37" rx="1.5"/>
+                    </g>
+                    <g id="digits" font-family="'Cormorant Garamond','Times New Roman',serif" font-weight="700" font-size="62" text-anchor="middle" fill="url(#goldBar)" stroke="#8a6a1e" stroke-width=".9" style="font-variant-numeric:lining-nums">
+                        <text x="181" y="159">4</text>
+                        <text x="219" y="159">5</text>
+                    </g>
+                    <path d="M151.5 127v-6M248.5 127v-6M181 119v-6M219 119v-6" stroke="#3a2a12" stroke-width="1.4" stroke-linecap="round"/>
+
+                    <g transform="translate(151.5 122)">
+                        <g class="fire" style="--d:0s;--f:0s">
+                            <circle class="flame-glow" cy="-12" r="26" fill="url(#glow)"/>
+                            <path class="flame" d="M0-27C7-16 8.5-7 0 0-8.5-7-7-16 0-27Z" fill="url(#flame)"/>
+                            <path class="flame" d="M0-14C3-9 3.6-4 0-1-3.6-4-3-9 0-14Z" fill="#fffbe6"/>
+                        </g>
+                        <path class="smoke" style="--d:0s" d="M0-2C-7-12 7-20 0-32-6-42 6-50 0-62"/>
+                    </g>
+                    <g transform="translate(181 114)">
+                        <g class="fire" style="--d:.08s;--f:-.4s">
+                            <circle class="flame-glow" cy="-12" r="26" fill="url(#glow)"/>
+                            <path class="flame" d="M0-27C7-16 8.5-7 0 0-8.5-7-7-16 0-27Z" fill="url(#flame)"/>
+                            <path class="flame" d="M0-14C3-9 3.6-4 0-1-3.6-4-3-9 0-14Z" fill="#fffbe6"/>
+                        </g>
+                        <path class="smoke" style="--d:.08s" d="M0-2C-7-12 7-20 0-32-6-42 6-50 0-62"/>
+                    </g>
+                    <g transform="translate(219 114)">
+                        <g class="fire" style="--d:.16s;--f:-.7s">
+                            <circle class="flame-glow" cy="-12" r="26" fill="url(#glow)"/>
+                            <path class="flame" d="M0-27C7-16 8.5-7 0 0-8.5-7-7-16 0-27Z" fill="url(#flame)"/>
+                            <path class="flame" d="M0-14C3-9 3.6-4 0-1-3.6-4-3-9 0-14Z" fill="#fffbe6"/>
+                        </g>
+                        <path class="smoke" style="--d:.16s" d="M0-2C-7-12 7-20 0-32-6-42 6-50 0-62"/>
+                    </g>
+                    <g transform="translate(248.5 122)">
+                        <g class="fire" style="--d:.24s;--f:-.2s">
+                            <circle class="flame-glow" cy="-12" r="26" fill="url(#glow)"/>
+                            <path class="flame" d="M0-27C7-16 8.5-7 0 0-8.5-7-7-16 0-27Z" fill="url(#flame)"/>
+                            <path class="flame" d="M0-14C3-9 3.6-4 0-1-3.6-4-3-9 0-14Z" fill="#fffbe6"/>
+                        </g>
+                        <path class="smoke" style="--d:.24s" d="M0-2C-7-12 7-20 0-32-6-42 6-50 0-62"/>
+                    </g>
+
+                    <!-- Étincelles -->
+                    <g fill="#f6e6a8">
+                        <g transform="translate(38 150) scale(1.2)"><use href="#starShape" class="twinkle" style="--t:0s"/></g>
+                        <g transform="translate(352 120) scale(1.5)"><use href="#starShape" class="twinkle" style="--t:-.9s"/></g>
+                        <g transform="translate(322 196) scale(.8)"><use href="#starShape" class="twinkle" style="--t:-1.7s"/></g>
+                        <g transform="translate(66 232) scale(.9)"><use href="#starShape" class="twinkle" style="--t:-2.2s"/></g>
+                        <g transform="translate(110 92) scale(.8)"><use href="#starShape" class="twinkle" style="--t:-1.2s"/></g>
+                        <g transform="translate(376 290)"><use href="#starShape" class="twinkle" style="--t:-.5s"/></g>
+                        <g transform="translate(20 330) scale(.8)"><use href="#starShape" class="twinkle" style="--t:-1.9s"/></g>
+                    </g>
+                </svg>
+            </div>
+
+            <button class="btn reveal" id="blow" type="button">Souffler les bougies</button>
+            <p class="wish__result" id="wishResult" aria-live="polite"></p>
+        </section>
+
+        <!-- Compteur -->
+        <section class="section time">
+            <p class="eyebrow reveal">Depuis le 16 novembre 1981</p>
+            <h2 class="title reveal">Tu illumines nos vies depuis</h2>
+            <div class="stats reveal">
+                <div class="stat"><span class="stat__num" data-stat="years">45</span><span class="stat__label">années</span></div>
+                <div class="stat"><span class="stat__num" data-stat="days">16 436</span><span class="stat__label">jours</span></div>
+                <div class="stat"><span class="stat__num" data-stat="hours">394 464</span><span class="stat__label">heures</span></div>
+                <div class="stat"><span class="stat__num" data-stat="minutes">23 667 840</span><span class="stat__label">minutes</span></div>
+                <div class="stat stat--wide"><span class="stat__num" data-stat="seconds">1 420 070 400</span><span class="stat__label">secondes</span></div>
+            </div>
+            <p class="lead reveal">… et chaque seconde à tes côtés est un cadeau.</p>
+        </section>
+
+        <!-- Vœux -->
+        <section class="section sweets">
+            <p class="eyebrow reveal">La vitrine des douceurs</p>
+            <h2 class="title reveal">Mes vœux pour toi</h2>
+            <div class="cards">
+                <article class="card reveal">
+                    <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M32 9c2.6 3.2 2.6 5.6 0 7-2.6-1.4-2.6-3.8 0-7z"/>
+                        <path d="M32 16v8"/>
+                        <rect x="20" y="24" width="24" height="12" rx="2"/>
+                        <rect x="12" y="36" width="40" height="16" rx="2"/>
+                        <path d="M12 43c3.3 0 3.3 3 6.7 3s3.3-3 6.6-3 3.4 3 6.7 3 3.3-3 6.7-3 3.3 3 6.6 3 3.4-3 6.7-3"/>
+                        <path d="M7 55h50"/>
+                    </svg>
+                    <h3>Une part de bonheur</h3>
+                    <p>Que chaque jour t’offre une raison de sourire, aussi douce qu’une part de ton gâteau préféré.</p>
+                </article>
+                <article class="card reveal">
+                    <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M19 36l4 19h18l4-19"/>
+                        <path d="M27 36l1.5 19M32 36v19M37 36l-1.5 19"/>
+                        <path d="M16 36c-1-5 2-8 6-8.5C22 22 26 19 32 19s10 3 10 8.5c4 .5 7 3.5 6 8.5z"/>
+                        <path d="M24 28c5 2 11 2 16 0"/>
+                        <circle cx="32" cy="14" r="3.2"/>
+                        <path d="M33.5 11c1-2.5 3-3.5 5-3.5"/>
+                    </svg>
+                    <h3>Une touche de douceur</h3>
+                    <p>Que toute la tendresse que tu donnes sans compter te revienne au centuple.</p>
+                </article>
+                <article class="card reveal">
+                    <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M21 13v-1a13 5 0 0 1 26 0v1z"/><path d="M23 15.5h22"/><path d="M21 18v1a13 5 0 0 0 26 0v-1z"/>
+                        <path d="M17 30v-1a13 5 0 0 1 26 0v1z"/><path d="M19 32.5h22"/><path d="M17 35v1a13 5 0 0 0 26 0v-1z"/>
+                        <path d="M20 47v-1a13 5 0 0 1 26 0v1z"/><path d="M22 49.5h22"/><path d="M20 52v1a13 5 0 0 0 26 0v-1z"/>
+                    </svg>
+                    <h3>Des couleurs plein la vie</h3>
+                    <p>Que tes journées soient gaies, légères et remplies de belles surprises.</p>
+                </article>
+                <article class="card reveal">
+                    <svg class="card__icon" viewBox="0 0 64 64" aria-hidden="true">
+                        <rect x="12" y="27" width="40" height="28" rx="1.5"/>
+                        <rect x="9" y="19" width="46" height="8" rx="1.5"/>
+                        <path d="M32 19v36"/>
+                        <path d="M32 19c-3-8-12-9-12-4s8 5 12 4zM32 19c3-8 12-9 12-4s-8 5-12 4z"/>
+                    </svg>
+                    <h3>Le plus précieux des cadeaux</h3>
+                    <p>Que la santé et la sérénité t’accompagnent chaque jour de cette nouvelle année.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Lettre -->
+        <section class="section letter">
+            <div class="letter__paper reveal">
+                <p class="eyebrow">Quelques mots</p>
+                <h2 class="letter__title">Chère Maman,</h2>
+                <p>Aujourd’hui est un jour à part&nbsp;: c’est celui où le monde a reçu son plus beau cadeau, toi.</p>
+                <p>Merci pour ton amour sans mesure, ta patience, ta force, et pour tous ces gestes discrets qui font de toi une maman unique. Tout ce que je suis, je te le dois.</p>
+                <p>Que cette nouvelle année t’apporte la santé, la sérénité et autant de bonheur que tu en offres autour de toi, chaque jour.</p>
+                <p>Joyeux anniversaire, Maman. Je t’aime.</p>
+                <p class="letter__closing">Avec tout mon amour,</p>
+                <p class="letter__sign">Houssam</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <svg class="ornament" viewBox="0 0 200 20" aria-hidden="true">
+            <path d="M0 10h78M122 10h78"/><path d="M100 2l8 8-8 8-8-8z"/>
+            <circle cx="85" cy="10" r="1.6"/><circle cx="115" cy="10" r="1.6"/>
+        </svg>
+        <p class="footer__script gold">Joyeux anniversaire, Hind</p>
+        <p class="eyebrow">Fait avec amour</p>
+    </footer>
+
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+    <script src="script.js"></script>
 </body>
 </html>
